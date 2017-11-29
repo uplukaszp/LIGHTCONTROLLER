@@ -21,6 +21,7 @@ Leds_Operator::Leds_Operator() {
 	for(int i=0;i<NUM_LEDS;i++)leds[i]=CRGB::White;
 	LEDS.addLeds<WS2812,DATA_PIN,GRB>(leds,NUM_LEDS);
 	LEDS.setBrightness(150);
+	LEDS.setCorrection(TypicalLEDStrip);
 	isOn=true;
 }
 
