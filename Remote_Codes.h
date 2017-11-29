@@ -1,0 +1,61 @@
+/*
+ * Remote_Codes.h
+ *
+ *  Created on: 14.05.2017
+ *      Author: Lukasz
+ */
+
+#ifndef REMOTE_CODES_H_
+#define REMOTE_CODES_H_
+
+
+enum codes
+{
+	onOff=0xFF02FD,
+	next=0xFF827D,
+	brUp=0xFF3AC5,
+	brDn=0xFFBA45,
+	R=0xFF1AE5,
+	R1=0xFF2AD5,
+	R2=0xFF0AF5,
+	R3=0xFF38C7,
+	R4=0xFF18E7,
+	RUp=0xFF28D7,
+	RDn=0xFF08F7,
+	G=0xFF9A65,
+	G1=0xFFAA55,
+	G2=0xFF8A75,
+	G3=0xFFB847,
+	G4=0xFF9867,
+	GUp=0xFFA857,
+	GDn=0xFF8877,
+	B=0xFFA25D,
+	Blue1=0xFF926D,
+	B2=0xFFB24D,
+	B3=0xFF7887,
+	B4=0xFF58A7,
+	BUp=0xFF6897,
+	BDn=0xFF48B7,
+	W=0xFF22DD,
+	W1=0xFF12ED,
+	W2=0xFF32CD,
+	W3=0xFFF807,
+	W4=0xFFD827,
+	Quick=0xFFE817,
+	Slow=0xFFC837,
+	Diy1=0xFF30CF,
+	Diy2=0xFFB04F,
+	Diy3=0xFF708F,
+	Diy4=0xFF10EF,
+	Diy5=0xFF906F,
+	Diy6=0xFF50AF,
+	Auto=0xFFF00F,
+	Flash=0xFFD02F,
+	Jump3=0xFF20DF,
+	Jump7=0xFFA05F,
+	Fade3=0xFF609F,
+	Fade7=0xFFE01F,
+};
+
+
+#endif /* REMOTE_CODES_H_ */
