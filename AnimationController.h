@@ -11,16 +11,21 @@
 #include "Settings.h"
 class AnimationController {
 public:
-	AnimationController();
+	AnimationController(uint8_t* width);
 	virtual ~AnimationController();
 	void selectAnimation(uint8_t animation);
 	void nextFrame(CRGB *leds);
 	void selectColors(CRGB *colors);
+	void addSpeed(int8_t animationSpeed);
+	void setPalette(CRGBPalette16 pal);
 private:
+	uint8_t* width;
 	void animation1(CRGB *leds);
 	void animation2(CRGB *leds);
 	uint8_t selectedAnimation;
 	CRGB *colors;
+	uint8_t speed;
+	CRGBPalette16 currentPallete;
 };
 
 #endif /* ANIMATIONCONTROLLER_H_ */

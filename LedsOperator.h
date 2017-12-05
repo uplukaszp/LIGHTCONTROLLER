@@ -27,7 +27,15 @@ public:
 	void setAnimation(uint8_t animation);
 	void nextFrame();
 	void nextPalette();
+	uint8_t getPaletteWidth();
+	void setPaletteWidth(uint8_t);
+	uint8_t getPaletteShift();
+	void setPaletteShift(uint8_t);
+	void addSpeed(int8_t animationSpeed);
 private:
+	uint8_t palleteShift=0;
+	uint8_t paletteWidth=5;
+	uint8_t pal=-1;
 	Memory_Controller mem;
 	AnimationController anim;
 	void copy();

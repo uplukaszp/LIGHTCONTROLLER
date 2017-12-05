@@ -7,7 +7,7 @@
 
 #include "LedsOperator.h"
 
-Leds_Operator::Leds_Operator() {
+Leds_Operator::Leds_Operator():anim(&paletteWidth){
 	leds=new CRGB[NUM_LEDS];
 	palettes=new CRGBPalette16[7];
 	palettes[6]=OceanColors_p;
@@ -23,6 +23,7 @@ Leds_Operator::Leds_Operator() {
 	LEDS.setBrightness(150);
 	LEDS.setCorrection(TypicalLEDStrip);
 	isOn=true;
+
 }
 
 Leds_Operator::~Leds_Operator() {
@@ -184,16 +185,12 @@ void Leds_Operator::nextFrame() {
 
 void Leds_Operator::nextPalette() {
 	setAnimation(0);
-	static uint8_t pal=0;
-	uint8_t start=0;
-	for(int i=0;i<NUM_LEDS;i++)
-	{
-		leds[i]=ColorFromPalette(palettes[pal], start, 255, NOBLEND);
-		start+=3;
-	}
-
 	if(pal>6)pal=0;
 	pal++;
+	fill_palette(leds,NUM_LEDS,palleteShift,paletteWidth,palettes[pal],LEDS.getBrightness(),LINEARBLEND);
+	anim.setPalette(palettes[pal]);
+
+
 }
 
 void Leds_Operator::restore() {
@@ -202,3 +199,27 @@ void Leds_Operator::restore() {
 		leds[i]=ledsCopy[i];
 	}
 }
+void Leds_Operator::addSpeed(int8_t animationSpeed)
+{
+
+}
+void Leds_Operator::setPaletteWidth(uint8_t width)
+{
+	paletteWidth=width;
+	fill_palette(leds,NUM_LEDS,palleteShift,paletteWidth,palettes[pal],LEDS.getBrightness(),LINEARBLEND);
+
+}
+uint8_t Leds_Operator::getPaletteWidth()
+{
+	return paletteWidth;
+}
+uint8_t Leds_Operator::getPaletteShift()
+{
+	return palleteShift;
+}
+void Leds_Operator::setPaletteShift(uint8_t shift)
+{
+	palleteShift=shift;
+	fill_palette(leds,NUM_LEDS,palleteShift,paletteWidth,palettes[pal],LEDS.getBrightness(),LINEARBLEND);
+}
+
