@@ -122,13 +122,14 @@ void loop() {
 			op.setColor(CRGB::LightSlateGray);
 			break;
 		case Quick:
-			op.addSpeed(1);
-			break;
-		case Slow:
 			op.addSpeed(-1);
 			break;
+		case Slow:
+			op.addSpeed(1);
+			break;
 		case Diy1:
-			op.HSV();
+			op.setColor(CRGB::Black);
+			op.setAnimation(4);
 			break;
 		case Diy2:
 			if(op.getPaletteWidth()<10)op.setPaletteWidth(op.getPaletteWidth()+1);
@@ -137,7 +138,7 @@ void loop() {
 			op.setPaletteShift(op.getPaletteShift()+25);
 			break;
 		case Diy4:
-			op.HSV(true);
+			op.setAnimation(3);
 			break;
 		case Diy5:
 			if(op.getPaletteWidth()>1)op.setPaletteWidth(op.getPaletteWidth()-1);
@@ -146,8 +147,10 @@ void loop() {
 			op.setPaletteShift(op.getPaletteShift()-25);
 			break;
 		case Auto:
+			op.HSV();
 			break;
 		case Flash:
+			op.HSV(true);
 			break;
 		case Jump3:
 			op.setAnimation(1);

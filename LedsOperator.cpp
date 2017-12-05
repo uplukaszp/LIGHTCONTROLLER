@@ -201,7 +201,7 @@ void Leds_Operator::restore() {
 }
 void Leds_Operator::addSpeed(int8_t animationSpeed)
 {
-
+	anim.addSpeed(animationSpeed);
 }
 void Leds_Operator::setPaletteWidth(uint8_t width)
 {

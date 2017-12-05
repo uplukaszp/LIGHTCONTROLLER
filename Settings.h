@@ -12,7 +12,7 @@
 #define DATA_PIN    5
 #define LED_TYPE    WS2811
 #define COLOR_ORDER GRB
-#define NUM_LEDS  24
+#define NUM_LEDS  25
 #define RECV_PIN  2
 #define ENABLED_LEDS 5
 

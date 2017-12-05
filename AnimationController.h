@@ -22,6 +22,8 @@ private:
 	uint8_t* width;
 	void animation1(CRGB *leds);
 	void animation2(CRGB *leds);
+	void animation3(CRGB *leds);
+	void animation4(CRGB* leds);
 	uint8_t selectedAnimation;
 	CRGB *colors;
 	uint8_t speed;
