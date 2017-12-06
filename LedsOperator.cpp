@@ -164,15 +164,7 @@ void Leds_Operator::save() {
 	mem.save(leds);
 }
 
-void Leds_Operator::HSV(bool reverse) {
-	static int initHue=0;
 
-	if(!reverse)initHue+=255/NUM_LEDS;
-	else initHue-=255/NUM_LEDS;
-	setAnimation(0);
-	fill_rainbow(leds, NUM_LEDS, initHue, 255/NUM_LEDS);
-
-}
 
 void Leds_Operator::setAnimation(uint8_t animation) {
 	anim.selectAnimation(animation);

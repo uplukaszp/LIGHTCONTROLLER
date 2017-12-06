@@ -147,10 +147,10 @@ void loop() {
 			op.setPaletteShift(op.getPaletteShift()-25);
 			break;
 		case Auto:
-			op.HSV();
+			op.setAnimation(5);
 			break;
 		case Flash:
-			op.HSV(true);
+			op.setAnimation(6);
 			break;
 		case Jump3:
 			op.setAnimation(1);

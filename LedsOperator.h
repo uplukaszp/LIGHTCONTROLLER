@@ -23,7 +23,6 @@ public:
 	void update();
 	void load();
 	void save();
-	void HSV(bool reverse=false);
 	void setAnimation(uint8_t animation);
 	void nextFrame();
 	void nextPalette();

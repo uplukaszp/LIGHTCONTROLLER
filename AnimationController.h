@@ -24,9 +24,12 @@ private:
 	void animation2(CRGB *leds);
 	void animation3(CRGB *leds);
 	void animation4(CRGB* leds);
+	void animation5(CRGB* leds);
+	void animation6(CRGB* leds);
 	uint8_t selectedAnimation;
 	CRGB *colors;
 	uint8_t speed;
+	uint32_t frame;
 	CRGBPalette16 currentPallete;
 };
 

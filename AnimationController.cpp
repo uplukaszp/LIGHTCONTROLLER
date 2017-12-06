@@ -14,6 +14,7 @@ AnimationController::AnimationController(uint8_t* width) {
 	speed = 10;
 	currentPallete = RainbowColors_p;
 	random16_add_entropy(random());
+	frame=0;
 }
 
 AnimationController::~AnimationController() {
@@ -39,6 +40,13 @@ void AnimationController::nextFrame(CRGB* leds) {
 			break;
 		case 4:
 			animation4(leds);
+			break;
+		case 5:
+			animation5(leds);
+			break;
+		case 6:
+			animation6(leds);
+			break;
 		default:
 			break;
 		}
@@ -54,7 +62,6 @@ void AnimationController::selectColors(CRGB* colors) {
 }
 
 void AnimationController::animation1(CRGB* leds) {
-	static uint16_t frame = 0;
 
 	if (frame < 255)
 		LEDS.setBrightness(dim8_raw(frame));
@@ -67,58 +74,75 @@ void AnimationController::animation1(CRGB* leds) {
 }
 
 void AnimationController::animation2(CRGB* leds) {
-	static uint16_t frame = 0;
+
 	fill_palette(leds, NUM_LEDS, frame, *width, currentPallete,
-			LEDS.getBrightness(), LINEARBLEND);
+	LEDS.getBrightness(), LINEARBLEND);
 	if (frame > 255)
 		frame = 0;
 	else
 		frame += 1;
 }
 void AnimationController::animation3(CRGB* leds) {
-	static uint8_t last = 0;
-	static uint8_t hue = 0;
-	//leds[last] = CRGB::Black;
-	//last = beatsin8(25, 0, NUM_LEDS, 0, 0);
-	fill_solid(leds,NUM_LEDS,CHSV( beatsin8(25, 0, 255, 0, 0), 255, 255));
-	hue += 1;
+	static uint8_t gHue = 0;
+	EVERY_N_MILLISECONDS(20) {
+		gHue++;
+	};
+	fadeToBlackBy(leds, NUM_LEDS, 20);
+	uint8_t pos = map(sin8(frame),0,255,0,NUM_LEDS-1);
+	leds[pos] += CHSV(gHue, 255, 192);
+	frame++;
 }
 void AnimationController::animation4(CRGB* leds) {
 	static const uint8_t SPARKING = 80;
 	static const uint8_t COOLING = 100;
 	static bool gReverseDirection = false;
-	// Array of temperature readings at each simulation cell
 	static byte heat[NUM_LEDS / 2];
-
-	// Step 1.  Cool down every cell a little
 	for (uint8_t i = 0; i < NUM_LEDS / 2; i++) {
 		heat[i] = qsub8(heat[i], random8(0, ((COOLING * 10) / NUM_LEDS) + 2));
 	}
-
-	// Step 2.  Heat from each cell drifts 'up' and diffuses a little
 	for (uint8_t k = NUM_LEDS / 2 - 1; k >= 2; k--) {
 		heat[k] = (heat[k - 1] + heat[k - 2] + heat[k - 2]) / 3;
 	}
-
-	// Step 3.  Randomly ignite new 'sparks' of heat near the bottom
 	if (random8() < SPARKING) {
 		uint8_t y = random8(7);
 		heat[y] = qadd8(heat[y], random8(160, 255));
 	}
-
-	// Step 4.  Map from heat cells to LED colors
 	for (uint8_t j = 0; j < NUM_LEDS / 2; j++) {
-		CRGB color = ColorFromPalette(currentPallete,scale8(heat[j],240));
+		CRGB color = HeatColor(heat[j]);
 		uint8_t pixelnumber;
 		if (gReverseDirection) {
 			pixelnumber = (NUM_LEDS - 1) - j;
 		} else {
 			pixelnumber = j;
 		}
-		leds[pixelnumber] = color;
-		leds[NUM_LEDS-(pixelnumber+1)]=color;
+		leds[pixelnumber]=blend(leds[pixelnumber], color,128);
+		leds[NUM_LEDS - (pixelnumber+2)]=blend(leds[NUM_LEDS - (pixelnumber+2)],color,128);
 	}
 
+
+}
+void AnimationController::animation5(CRGB* leds) {
+	fadeToBlackBy(leds, NUM_LEDS, 40);
+	byte dothue = 0;
+	for (int i = 0; i < 4; i++) {
+		leds[map(sin8(i*frame++),0,255,0,NUM_LEDS-1)] |= CHSV(dothue, 200, 255);
+		dothue += 66;
+	}
+}
+void AnimationController::animation6(CRGB* leds) {
+	uint16_t xscale = 30; // Wouldn't recommend changing this on the fly, or the animation will be really blocky.
+	uint16_t yscale = 30;
+	static int16_t dist = random16();
+	for (int i = 0; i < 20; i++) {
+		uint8_t locn = inoise8(xscale, dist + yscale + i * 200); // Get a new pixel location from moving noise. locn rarely goes below 48 or above 192, so let's remove those ends.
+		locn = constrain(locn, 48, 192); // Ensure that the occasional value outside those limits is not used.
+		uint8_t pixlen = map(locn, 48, 192, 0, NUM_LEDS - 1); // Map doesn't constrain, so we now map locn to the the length of the strand.
+		locn=map(locn,48,192,0,255);
+		leds[pixlen] = ColorFromPalette(currentPallete, inoise8(dist), 255,LINEARBLEND); // Use that value for both the location as well as the palette index colour for the pixel.
+	}
+
+	dist += map(sin8(frame++),0,255,1,4);
+	fadeToBlackBy(leds, NUM_LEDS, 16);
 }
 void AnimationController::addSpeed(int8_t animationSpeed) {
 	if (((speed + animationSpeed) > 0) && ((speed + animationSpeed) < 30))
