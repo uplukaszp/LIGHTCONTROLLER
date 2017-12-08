@@ -32,7 +32,6 @@ Leds_Operator::~Leds_Operator() {
 
 void Leds_Operator::switchOnOff() {
 
-	setAnimation(0);
 	if(isOn)
 	{
 		isOn=false;
